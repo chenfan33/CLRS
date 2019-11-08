@@ -5929,7 +5929,8 @@
 <blockquote>
 <p>Suppose that all edge weights in a graph are integers in the range from $1$ to $|V|$. How fast can you make Prim's algorithm run? What if the edge weights are integers in the range from $1$ to $W$ for some constant $W$?</p>
 </blockquote>
-<p>(Removed)</p>
+<p>For the first case, we can use a van Emde Boas tree to improve the time bound to $O(E \lg \lg V)$. Comparing to the Fibonacci heap implementation, this improves the asymptotic running time only for sparse graphs, and it cannot improve the running time polynomially. An advantage of this implementation is that it may have a lower overhead.</p>
+<p>For the second case, we can use a collection of doubly linked lists, each corresponding to an edge weight. This improves the bound to $O(E)$.</p>
 <h2 id="232-6-star">23.2-6 $\star$</h2>
 <blockquote>
 <p>Suppose that the edge weights in a graph are uniformly distributed over the halfopen interval $[0, 1)$. Which algorithm, Kruskal's or Prim's, can you make run faster?</p>

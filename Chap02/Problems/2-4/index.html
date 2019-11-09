@@ -5743,7 +5743,8 @@ of the <strong>for</strong> loop, so the number of constant time steps of insert
 18
 19
 20
-21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">MERGE</span><span class="o">-</span><span class="n">INVERSIONS</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+21
+22</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">MERGE</span><span class="o">-</span><span class="n">INVERSIONS</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
     <span class="n">n1</span> <span class="o">=</span> <span class="n">q</span> <span class="o">-</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">n2</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">q</span>
     <span class="n">let</span> <span class="n">L</span><span class="p">[</span><span class="mf">1.</span><span class="p">.</span><span class="n">n1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="n">and</span> <span class="n">R</span><span class="p">[</span><span class="mf">1.</span><span class="p">.</span><span class="n">n2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="n">be</span> <span class="k">new</span> <span class="n">arrays</span>
@@ -5757,12 +5758,13 @@ of the <strong>for</strong> loop, so the number of constant time steps of insert
     <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">inversions</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">k</span> <span class="o">=</span> <span class="n">p</span> <span class="n">to</span> <span class="n">r</span>
-        <span class="k">if</span> <span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span>
             <span class="n">inversions</span> <span class="o">=</span> <span class="n">inversions</span> <span class="o">+</span> <span class="n">n1</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
             <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">else</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">inversions</span>
 </pre></div>
 </td></tr></table>

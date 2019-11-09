@@ -5825,18 +5825,18 @@
  9
 10
 11
-12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">MAX</span><span class="o">-</span><span class="n">SUBARRAY</span><span class="o">-</span><span class="n">BRUTE</span><span class="o">-</span><span class="n">FORCE</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">BRUTE</span><span class="o">-</span><span class="n">FORCE</span><span class="o">-</span><span class="n">FIND</span><span class="o">-</span><span class="n">MAXIMUM</span><span class="o">-</span><span class="n">SUBARRAY</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">length</span>
-    <span class="n">max</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
+    <span class="n">max</span><span class="o">-</span><span class="n">sum</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
     <span class="k">for</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">n</span>
         <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">h</span> <span class="o">=</span> <span class="n">l</span> <span class="n">to</span> <span class="n">n</span>
             <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="n">h</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">sum</span> <span class="o">&gt;</span> <span class="n">max</span>
-                <span class="n">max</span> <span class="o">=</span> <span class="n">sum</span>
+            <span class="k">if</span> <span class="n">sum</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">-</span><span class="n">sum</span>
+                <span class="n">max</span><span class="o">-</span><span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span>
                 <span class="n">low</span> <span class="o">=</span> <span class="n">l</span>
                 <span class="n">high</span> <span class="o">=</span> <span class="n">h</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">max</span><span class="o">-</span><span class="n">sum</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -5870,21 +5870,23 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">MAX</span><span class="o">-</span><span class="n">SUBARRAY</span><span class="o">-</span><span class="n">LINEAR</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+15
+16</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ITERATIVE</span><span class="o">-</span><span class="n">FIND</span><span class="o">-</span><span class="n">MAXIMUM</span><span class="o">-</span><span class="n">SUBARRAY</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">length</span>
-    <span class="n">max</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
+    <span class="n">max</span><span class="o">-</span><span class="n">sum</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
     <span class="n">sum</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
     <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">n</span>
         <span class="n">currentHigh</span> <span class="o">=</span> <span class="n">j</span>
         <span class="k">if</span> <span class="n">sum</span> <span class="o">&gt;</span> <span class="mi">0</span>
             <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-        <span class="k">else</span> <span class="n">currentLow</span> <span class="o">=</span> <span class="n">j</span>
+        <span class="k">else</span>
+            <span class="n">currentLow</span> <span class="o">=</span> <span class="n">j</span>
             <span class="n">sum</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">sum</span> <span class="o">&gt;</span> <span class="n">max</span>
-            <span class="n">max</span> <span class="o">=</span> <span class="n">sum</span>
+        <span class="k">if</span> <span class="n">sum</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">-</span><span class="n">sum</span>
+            <span class="n">max</span><span class="o">-</span><span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span>
             <span class="n">low</span> <span class="o">=</span> <span class="n">currentLow</span>
             <span class="n">high</span> <span class="o">=</span> <span class="n">currentHigh</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">max</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">max</span><span class="o">-</span><span class="n">sum</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
                 

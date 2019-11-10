@@ -5704,7 +5704,54 @@
 <p><strong>c.</strong> Modify the $\text{RANDOMIZED-QUICKSORT}$ procedure to call $\text{PARTITION}'$, and name the new procedure $\text{RANDOMIZED-QUICKSORT}'$. Then modify the $\text{QUICKSORT}$ procedure to produce a procedure $\text{QUICKSORT}'(p, r)$ that calls $\text{RANDOMIZED-PARTITION}'$ and recurses only on partitions of elements not know to be equal to each other.</p>
 <p><strong>d.</strong> Using $\text{QUICKSORT}'$, how would you adjust the analysis of section 7.4.2 to avoid the assumption that all elements are distinct?</p>
 </blockquote>
-<p>(Removed)</p>
+<p><strong>a.</strong> Since all elements are equal, $\text{RANDOMIZED-QUICKSORT}$ always returns $q = r$. We have recurrence $T(n) = T(n - 1) + \Theta(n) = \Theta(n^2)$.</p>
+<p><strong>b.</strong></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">PARTITION</span><span class="err">&#39;</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">h</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">r</span>
+        <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span>
+            <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p><strong>c.</strong></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">QUICKSORT</span><span class="err">&#39;</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">r</span>
+        <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">RANDOMIZED</span><span class="o">-</span><span class="n">PARTITION</span><span class="err">&#39;</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">QUICKSORT</span><span class="err">&#39;</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">QUICKSORT</span><span class="err">&#39;</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p><strong>d.</strong> Since we don't recurse on elements equal to the pivot, the subproblem sizes with $\text{QUICKSORT}'$ are no larger than the subproblem sizes with $\text{QUICKSORT}$ when all elements are distinct.</p>
                 
                   
                 

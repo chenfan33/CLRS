@@ -5729,7 +5729,7 @@ by modifying quicksort to identify overlaps:</p>
 <p>On lines 2 through 3 of $\text{FIND-INTERSECTION}$, we select a random <em>pivot interval</em> as the initial region of overlap $[a ,b]$. There are two situations:</p>
 <ul>
 <li>If the intervals are all disjoint, then the estimated region of overlap will be this randomly-selected interval;</li>
-<li>Otherwise, on lines 6 through 11, we loop through all intervals in arrays $A$ (except the endpoint which is the initial pivot interval). At each iteration, we determine if the current interval overlaps the current estimated region of overlap. If it does, we update the estimated region of overlap as $[a, b] = [a_i, b_i] \cap [a, b]$.</li>
+<li>otherwise, on lines 6 through 11, we loop through all intervals in arrays $A$ (except the endpoint which is the initial pivot interval). At each iteration, we determine if the current interval overlaps the current estimated region of overlap. If it does, we update the estimated region of overlap as $[a, b] = [a_i, b_i] \cap [a, b]$.</li>
 </ul>
 <p>$\text{FIND-INTERSECTION}$ has a worst-case running time $\Theta(n)$ since we evaluate the intersection from index $1$ to $A.length$ of the array.</p>
 <p>We can extend the $\text{QUICKSORT}$ to allow fuzzy sorting using $\text{FIND-INTERSECTION}$.</p>

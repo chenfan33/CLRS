@@ -5696,7 +5696,10 @@
 <p><strong>a.</strong> Design a randomized algorithm for fuzzy-sorting $n$ intervals. Your algorithm should have the general structure of an algorithm that quicksorts the left endpoints (the $a_i$ values), but it should take advantage of overlapping intervals to improve the running time. (As the intervals overlap more and more, the problem of fuzzy-sorting the intervals becoes progressively easier. Your algorithm should take advantage of such overlapping, to the extend that it exists.)</p>
 <p><strong>b.</strong> Argue that your algorithm runs in expected time $\Theta(n\lg n)$ in general, but runs in expected time $\Theta(n)$ when all of the intervals overlap (i.e., when there exists a value $x$ such that $x \in [a_i, b_i]$ for all $i$). Your algorithm should not be checking for this case explicitly; rather, its performance should naturally improve as the amount of overlap increases.</p>
 </blockquote>
-<p><strong>a.</strong></p>
+<p><strong>a.</strong> With randomly selected left endpoint for the pivot, we could trivially perform fuzzy sorting by quicksorting the left endpoints, $a_i$'s. This would achieve the worst-case expected running time of $\Theta(n\lg n)$. We definitely can do better by exploit the characteristic that we don't have to sort overlapping intervals. That is, for two overlapping intervals, $[a_i, b_i]$ and $[a_j, b_j]$. In such situations, we can always choose $\{c_i, c_j\}$ (within the
+intersection of these intervals) such that $c_i \le c_j$ or $c_j \le c_i$.</p>
+<p>Since overlapping intervals do not require sorting, we can improve the expected running time
+by modifying quicksort to identify overlaps:</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
  2
  3
@@ -5708,33 +5711,97 @@
  9
 10
 11
-12
-13
-14
-15
-16
-17</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">FUZZY</span><span class="o">-</span><span class="n">PARTITION</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
-    <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">p</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">.</span><span class="n">a</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
-            <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="err">≥</span> <span class="n">x</span><span class="p">.</span><span class="n">a</span> <span class="n">or</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="err">≤</span> <span class="n">x</span><span class="p">.</span><span class="n">b</span>
-            <span class="n">x</span><span class="p">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">x</span><span class="p">.</span><span class="n">a</span><span class="p">)</span> <span class="n">and</span> <span class="n">x</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">x</span><span class="p">.</span><span class="n">b</span><span class="p">)</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-    <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">and</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">FIND</span><span class="o">-</span><span class="n">INTERSECTION</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">rand</span> <span class="o">=</span> <span class="n">RANDOM</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">rand</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">].</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">].</span><span class="n">b</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">p</span> <span class="n">to</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">a</span> <span class="err">≤</span> <span class="n">b</span> <span class="n">and</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">b</span> <span class="err">≥</span> <span class="n">a</span>
+            <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">a</span> <span class="o">&gt;</span> <span class="n">a</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">a</span>
+            <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">b</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">b</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
-<p>When intervals overlap we treat them as equal elements, thus cutting down on the time required to sort.</p>
-<p><strong>b.</strong> For distinct intervals the algorithm runs exactly as regular quicksort does, so its expected runtime will be $\Theta(n\lg n)$ in general. If all of the intervals overlap then the condition on line 12 will be satisfied for every iteration of the <strong>for</strong> loop. Thus the algorithm returns $p$ and $r$, so only empty arrays remain to be sorted. $\text{FUZZY-PARTITION}$ will only be called a single time, and since its runtime remains $\Theta(n)$, the total expected runtime is $\Theta(n)$.</p>
+<p>On lines 2 through 3 of $\text{FIND-INTERSECTION}$, we select a random <em>pivot interval</em> as the initial region of overlap $[a ,b]$. There are two situations:</p>
+<ul>
+<li>If the intervals are all disjoint, then the estimated region of overlap will be this randomly-selected interval;</li>
+<li>Otherwise, on lines 6 through 11, we loop through all intervals in arrays $A$ (except the endpoint which is the initial pivot interval). At each iteration, we determine if the current interval overlaps the current estimated region of overlap. If it does, we update the estimated region of overlap as $[a, b] = [a_i, b_i] \cap [a, b]$.</li>
+</ul>
+<p>$\text{FIND-INTERSECTION}$ has a worst-case running time $\Theta(n)$ since we evaluate the intersection from index $1$ to $A.length$ of the array.</p>
+<p>We can extend the $\text{QUICKSORT}$ to allow fuzzy sorting using $\text{FIND-INTERSECTION}$.</p>
+<p>First, partition the input array into "left", "middle", and "right" subarrays. The "middle" subarray elements overlap the interval $[a, b]$ found by $\text{FIND-INTERSECTION}$. As a result, they can appear in any order in the output.</p>
+<p>We recursively call $\text{FUZZY-SORT}$ on the "left" and "right" subarrays to produce a fuzzy sorted array in-place. The following pseudocode implements these basic operations. One can run $\text{FUZZY-SORT}(A, 1, A.length)$ to fuzzy-sort an array.</p>
+<p>The first and last elements in a subarray are indexed by $p$ and $r$, respectively.
+The index of the first and last intervals in the "middle" region are indexed by $q$ and $t$, respectively.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">FUZZY</span><span class="o">-</span><span class="n">SORT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">r</span>
+        <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="n">FIND</span><span class="o">-</span><span class="n">INTERSECTION</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">PARTITION</span><span class="o">-</span><span class="n">RIGHT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">PARTITION</span><span class="o">-</span><span class="n">LEFT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">FUZZY</span><span class="o">-</span><span class="n">SORT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">FUZZY</span><span class="o">-</span><span class="n">SORT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>We need to determine how to partition the input arrays into "left", "middle", and "right" subarrays in-place.</p>
+<p>First, we $\text{PARTITION-RIGHT}$ the entire array from $p$ to $r$ using a pivot value equal to the left endpoint $a$ found by $\text{FIND-INTERSECTION}$, such that $a_i \le a$.</p>
+<p>Then, we $\text{PARTITION-LEFT}$ the subarray from $p$ to $t$ using a pivot value equal to the right endpoint $b$ found by $\text{FIND-INTERSECTION}$, such that $b_i &lt; b$.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">PARTITION</span><span class="o">-</span><span class="n">RIGHT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">p</span> <span class="n">to</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">a</span> <span class="err">≤</span> <span class="n">a</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">PARTITION</span><span class="o">-</span><span class="n">LEFT</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="o">=</span> <span class="n">p</span> <span class="n">to</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">b</span> <span class="o">&lt;</span> <span class="n">b</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">exchange</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="n">with</span> <span class="n">A</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</td></tr></table>
+
+<p>The $\text{FUZZY-SORT}$ is similar to the randomized quicksort presented in the textbook. In fact, $\text{PARTITION-RIGHT}$ and $\text{PARTITION-LEFT}$ are nearly identical to the $\text{PARTITION}$ procedure on page 171. The primary difference is the value of the pivot used to sort the intervals.</p>
+<p><strong>b.</strong> We expect $\text{FUZZY-SORT}$ to have a worst-case running time $\Theta(n\lg n)$ for a set of input intervals which do not overlap each other. First, notice that lines 2 through 3 of $\text{FIND-INTERSECTION}$ select a <em>random interval</em> as the initial pivot interval. Recall that if the intervals are disjoint, then $[a, b]$ will simply be this initial interval.</p>
+<p>Since for this example there are no overlaps, the "middle" region created by lines 4 and 5 of $\text{FUZZY-SORT}$ will only contain the initially-selected interval. In general, line 3 is $\Theta(n)$. Fortunately, since the pivot interval $[a, b]$ is randomly-selected, the expected sizes of the "left" and "right" subarrays are both $\left\lfloor \frac{n}{2} \right\rfloor$. In conclusion, the reccurrence of the running time is</p>
+<p>$$
+\begin{aligned}
+T(n) &amp; \le 2T(n / 2) + \Theta(n) \\
+     &amp; =   \Theta(n\lg n).
+\end{aligned}
+$$</p>
+<p>The $\text{FIND-INTERSECTION}$ will always return a non-empty region of overlap $[a, b]$ containing $x$ if the intervals all overlap at $x$. For this situation, every interval will be within the "middle" region since the "left" and "right" subarrays will be empty, lines 6 and 7 of $\text{FUZZY-SORT}$ are $\Theta(1)$. As a result, there is no recursion and the running time of $\text{FUZZY-SORT}$ is determined by the $\Theta(n)$ running time required to find the region of overlap. Therfore, if the input intervals all overlap at a point, then the expected worst-case running time is $\Theta(n)$.</p>
                 
                   
                 

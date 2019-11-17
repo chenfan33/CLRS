@@ -5916,18 +5916,16 @@ $$</p>
  7
  8
  9
-10
-11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">BELLMAN</span><span class="o">-</span><span class="n">FORD</span><span class="err">&#39;</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+10</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">BELLMAN</span><span class="o">-</span><span class="n">FORD</span><span class="err">&#39;</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
     <span class="n">INITIALIZE</span><span class="o">-</span><span class="n">SINGLE</span><span class="o">-</span><span class="n">SOURCE</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="o">|</span><span class="n">G</span><span class="p">.</span><span class="n">V</span><span class="o">|</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">each</span> <span class="n">edge</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="err">∈</span> <span class="n">G</span><span class="p">.</span><span class="n">E</span>
             <span class="n">RELAX</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">each</span> <span class="n">edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="err">∈</span> <span class="n">G</span><span class="p">.</span><span class="n">E</span>
         <span class="k">if</span> <span class="n">v</span><span class="p">.</span><span class="n">d</span> <span class="o">&gt;</span> <span class="n">u</span><span class="p">.</span><span class="n">d</span> <span class="o">+</span> <span class="n">w</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            <span class="n">v</span><span class="p">.</span><span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
-    <span class="k">for</span> <span class="n">each</span> <span class="n">vertex</span> <span class="n">v</span> <span class="err">∈</span> <span class="n">G</span><span class="p">.</span><span class="n">V</span>
-        <span class="k">if</span> <span class="n">v</span><span class="p">.</span><span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
-            <span class="n">FOLLOW</span><span class="o">-</span><span class="n">AND</span><span class="o">-</span><span class="n">MARK</span><span class="o">-</span><span class="n">PRED</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">mark</span> <span class="n">v</span>
+    <span class="k">for</span> <span class="n">each</span> <span class="n">vertex</span> <span class="n">v</span> <span class="err">∈</span> <span class="n">marked</span> <span class="n">vertices</span>
+        <span class="n">FOLLOW</span><span class="o">-</span><span class="n">AND</span><span class="o">-</span><span class="n">MARK</span><span class="o">-</span><span class="n">PRED</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -5937,14 +5935,15 @@ $$</p>
 4
 5
 6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">FOLLOW</span><span class="o">-</span><span class="n">AND</span><span class="o">-</span><span class="n">MARK</span><span class="o">-</span><span class="n">PRED</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">v</span><span class="p">.</span><span class="err">π</span> <span class="o">!=</span> <span class="n">NIL</span> <span class="n">and</span> <span class="n">v</span><span class="p">.</span><span class="err">π</span><span class="p">.</span><span class="n">d</span> <span class="o">!=</span> <span class="o">-</span><span class="err">∞</span>
-        <span class="n">v</span><span class="p">.</span><span class="err">π</span><span class="p">.</span><span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">NIL</span> <span class="n">and</span> <span class="n">v</span><span class="p">.</span><span class="n">d</span> <span class="o">!=</span> <span class="o">-</span><span class="err">∞</span>
+        <span class="n">v</span><span class="p">.</span><span class="n">d</span> <span class="o">=</span> <span class="o">-</span><span class="err">∞</span>
         <span class="n">FOLLOW</span><span class="o">-</span><span class="n">AND</span><span class="o">-</span><span class="n">MARK</span><span class="o">-</span><span class="n">PRED</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="err">π</span><span class="p">)</span>
     <span class="k">else</span>
         <span class="k">return</span>
 </pre></div>
 </td></tr></table>
 
+<p>After running $\text{BELLMAN-FORD}'$, run $\text{DFS}$ with all vertices on negative-weight cycles as source vertices. All the vertices that can be reached from these vertices should have their $d$ attributes set to $-\infty$.</p>
 <h2 id="241-5-star">24.1-5 $\star$</h2>
 <blockquote>
 <p>Let $G = (V, E)$ be a weighted, directed graph with weight function $w : E \rightarrow \mathbb R$. Give an $O(VE)$-time algorithm to find, for each vertex $v \in V$, the value $\delta^*(v) = \min_{u \in V} \{\delta(u, v)\}$.</p>

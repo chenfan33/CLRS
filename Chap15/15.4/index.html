@@ -5961,7 +5961,7 @@
 <blockquote>
 <p>Give an $O(n\lg n)$-time algorithm to find the longest monotonically increasing subsequence of a sequence of $n$ numbers. ($\textit{Hint:}$ Observe that the last element of a candidate subsequence of length $i$ is at least as large as the last element of a candidate subsequence of length $i - 1$. Maintain candidate subsequences by linking them through the input sequence.)</p>
 </blockquote>
-<p>The algorithm $\text{LONG-MONOTONIC}(A)$ returns the longest monotonically increasing subsequence of $S$, where $S$ has length $n$.</p>
+<p>The algorithm $\text{LONG-MONOTONIC}(A)$ returns the longest monotonically increasing subsequence of $A$, where $A$ has length $n$.</p>
 <p>The algorithm works as follows: a new array B will be created such that $B[i]$ contains the last value of a longest monotonically increasing subsequence of length $i$. A new array $C$ will be such that $C[i]$ contains the monotonically increasing subsequence of length $i$ with smallest last element seen so far.</p>
 <p>To analyze the runtime, observe that the entries of $B$ are in sorted order, so we can execute line 9 in $O(\lg n)$ time. Since every other line in the for-loop takes constant time, the total run-time is $O(n\lg n)$.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
